@@ -1,0 +1,24 @@
+name: Bug report
+description: Report incorrect results or setup problems.
+title: "[Bug]: "
+body:
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include tool arguments, explicit year/term and sanitized error text. Never include credentials or student records.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual behavior
+      description: Link the official Course Explorer page if the data looks wrong.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Client, operating system and source revision
+    validations:
+      required: true

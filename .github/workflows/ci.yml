@@ -17,3 +17,6 @@ jobs:
       - run: uv run pytest -q
       - run: uv run ruff check .
       - run: uv build
+      - name: Verify documented Git-source installation
+        if: matrix.python == '3.12'
+        run: uv tool install --from git+https://github.com/vishalsachdev/uiuc-course-mcp@9778a866e6023bddfd41d6c8cf74e907f08ec106 uiuc-course-mcp

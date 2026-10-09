@@ -1,8 +1,50 @@
 # UIUC Course MCP
 
+[![CI](https://github.com/vishalsachdev/uiuc-course-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/vishalsachdev/uiuc-course-mcp/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**Illinois course search and section schedules for your local AI assistant.**
+
+From [Vishal Sachdev](https://github.com/vishalsachdev), creator of [Canvas MCP](https://github.com/vishalsachdev/canvas-mcp).
+
+[Setup website](https://vishalsachdev.github.io/uiuc-course-mcp/) · [Request a feature](https://github.com/vishalsachdev/uiuc-course-mcp/issues/new?template=feature_request.yml) · [Report a bug](https://github.com/vishalsachdev/uiuc-course-mcp/issues/new?template=bug_report.yml) · [Contribute](CONTRIBUTING.md)
+
 Discover Illinois courses from a local MCP client. Search offered courses within a subject, read course descriptions and restrictions, and inspect section schedules using public [Illinois Course Explorer](https://courses.illinois.edu/) data.
 
 Independent community project; not affiliated with or endorsed by the university. Read-only, no account or API key required.
+
+## Try these questions
+
+- “Find BADM courses with database in the title for fall 2026.”
+- “What does BADM 554 cover, and what restrictions does the source list?”
+- “Show every BADM 554 section meeting for fall 2026, including instructors.”
+
+A verified BADM 554 example returns **Enterprise Database Management**, **4 hours.**, and source-provided section references. Results include official URLs and retrieval timestamps. This is a dated example, not a promise about future offerings.
+
+## Run without cloning
+
+With Python 3.11+, Git and uv installed, configure your local MCP client to run:
+
+```sh
+uvx --from git+https://github.com/vishalsachdev/uiuc-course-mcp@9778a866e6023bddfd41d6c8cf74e907f08ec106 uiuc-course-mcp
+```
+
+This pins the reviewed source revision. uv downloads the code and installs dependencies in an isolated cached environment. It starts a stdio server that waits for its client; it is not an interactive course-search CLI. Dependencies are resolved from the project's constraints; use the cloned, locked setup below if you need exact dependency reproducibility.
+
+Claude Desktop configuration:
+
+```json
+{
+  "mcpServers": {
+    "uiuc-courses": {
+      "command": "/ABSOLUTE/PATH/TO/uvx",
+      "args": ["--from", "git+https://github.com/vishalsachdev/uiuc-course-mcp@9778a866e6023bddfd41d6c8cf74e907f08ec106", "uiuc-course-mcp"]
+    }
+  }
+}
+```
+
+Find the executable with `which uvx` on macOS/Linux or `where uvx` on Windows. Use its absolute path; GUI clients may not inherit your terminal PATH.
 
 ## Quick start
 
@@ -80,6 +122,14 @@ Offline tests use dated public XML fixtures and synthetic edge cases. Live smoke
 ## GitHub Pages
 
 The `site/` directory contains a static, accessible setup site without trackers or remote scripts. The Pages workflow deploys it from `main`. In repository Settings → Pages, select **GitHub Actions** as the source, then run the Pages workflow. The separate CI workflow verifies tests, lint and package builds.
+
+## Companion to Canvas MCP
+
+Use UIUC Course MCP to discover public Illinois offerings and section schedules. Use [Canvas MCP](https://github.com/vishalsachdev/canvas-mcp) for supported workflows inside your Canvas courses, such as assignments, deadlines and course content. Canvas MCP requires its own credentials and permissions. These are separate servers; no automatic linking or data exchange is built in.
+
+## Contribute
+
+Feature requests, bug reports, documentation fixes and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local checks and scope. Describe your course-discovery workflow so contributors can prioritize useful improvements. There is no promise of a response time or feature delivery date.
 
 ## Inspiration and license
 
