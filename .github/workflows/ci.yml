@@ -19,4 +19,6 @@ jobs:
       - run: uv build
       - name: Verify documented Git-source installation
         if: matrix.python == '3.12'
-        run: uv tool install --from git+https://github.com/vishalsachdev/uiuc-course-mcp@9778a866e6023bddfd41d6c8cf74e907f08ec106 uiuc-course-mcp
+        env:
+          UV_CACHE_DIR: ${{ runner.temp }}/uiuc-first-user-cache
+        run: uv run python scripts/mcp_smoke.py -- uvx --from git+https://github.com/vishalsachdev/uiuc-course-mcp@9778a866e6023bddfd41d6c8cf74e907f08ec106 uiuc-course-mcp

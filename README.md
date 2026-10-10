@@ -44,13 +44,15 @@ Claude Desktop configuration:
 }
 ```
 
-Find the executable with `which uvx` on macOS/Linux or `where uvx` on Windows. Use its absolute path; GUI clients may not inherit your terminal PATH.
+Find the executable with `which uvx` on macOS/Linux or `where uvx` on Windows. Use its absolute path; GUI clients may not inherit your terminal PATH. Merge the `uiuc-courses` entry into your existing `mcpServers` object rather than replacing other connectors.
 
 ## Quick start
 
-Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/). Download this repository, then from its directory:
+Requires Python 3.11+, Git and [uv](https://docs.astral.sh/uv/). Clone this repository, then from its directory:
 
 ```sh
+git clone https://github.com/vishalsachdev/uiuc-course-mcp.git
+cd uiuc-course-mcp
 uv sync --locked
 uv run uiuc-course-mcp
 ```
@@ -80,6 +82,28 @@ codex mcp add uiuc-courses -- /ABSOLUTE/PATH/uiuc-course-mcp/.venv/bin/uiuc-cour
 ```
 
 This release runs on your computer. The documentation website is not an MCP endpoint. Remote web/mobile custom connectors need a separately hosted server, which is outside this release.
+
+## Verify your connection
+
+After restarting your client, confirm it lists `search_courses`, `get_course_details` and `list_course_sections`. Ask: “Find BADM courses with database in the title for fall 2026.” On October 10, 2026, this returned BADM 352 and BADM 554; offerings can change. Then ask for BADM 554's description and section meetings, with source links.
+
+If the connector does not appear, check the absolute executable path, JSON syntax and your client's MCP logs. Run `uv --version` and `git --version` in a terminal; first-time installation needs network access to GitHub and the Python package index. Course lookups need access to `courses.illinois.edu`. A terminal server that waits silently is normal; stop it with Ctrl-C and let the client start its own process. No API key is required.
+
+For a repeatable protocol check from a checkout, run `uv run python scripts/mcp_smoke.py -- .venv/bin/uiuc-course-mcp`. Add `--live` before `--` to opt into the dated public course check. On Windows substitute `.venv\Scripts\uiuc-course-mcp.exe`. This checks the installed server with the official Python MCP client; it does not certify a particular desktop app. See [validation](docs/validation.md) for tested environments and remaining native checks.
+
+## Update or roll back
+
+**Git-source configuration:** the full commit after `@` deliberately stays fixed. Restarting, refreshing uv's cache or using `--upgrade` does **not** advance that source pin. When adopting a reviewed newer revision, save your old configuration, replace the commit in the `--from` argument with the new full commit from GitHub, and restart the client. Repeat the connection check above. To roll back the source, restore the previous commit and restart. Dependencies remain resolved within project constraints; use the locked checkout for exact dependency versions.
+
+**Cloned checkout:** stop the client, save `git rev-parse HEAD`, and ensure `git status --short` is empty before updating:
+
+```sh
+git switch main
+git pull --ff-only
+uv sync --locked
+```
+
+Restart and repeat the connection check. If you have local edits, preserve them before updating; do not discard them to make these commands succeed. To roll back a clean checkout, stop the client, run `git switch --detach <saved-commit>` followed by `uv sync --locked`, and restart. A ZIP download has no Git update path: download the newer source, install it, and update the client's executable path if the folder moved. Keep the old folder until the new connection works.
 
 ## Tools
 
